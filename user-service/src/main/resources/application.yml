@@ -5,8 +5,8 @@ spring:
   application:
     name: user-service
   datasource:
-#    url: jdbc:h2:mem:testdb  # 인메모리 모드 사용
-    url: jdbc:h2:~/test # 파일기반. ~:사용자홈디렉토리-->예)C:\Users\username\test.mv.db
+    url: jdbc:h2:mem:testdb  # 인메모리 모드 사용
+#    url: jdbc:h2:~/test # 파일기반. ~:사용자홈디렉토리-->예)C:\Users\username\test.mv.db
     driver-class-name: org.h2.Driver
     username: sa
     password:

@@ -40,14 +40,14 @@ public class CatalogController {
     }
 
     @GetMapping("/catalogs")
-    public ResponseEntity(List<ResponseCatalog>) getCatalogs(){
-        Iterable< CatalogEntity> catalogList = catalogService.getAllCatalogs();
+    public ResponseEntity<List<ResponseCatalog>> getCatalogs() {
+        Iterable<CatalogEntity> allCatalogs = catalogService.getAllCatalogs();
 
-        List<ResponseCatalog> responseCatalogList = new ArrayList<>();
-        catalogList.forEach(catalogEntity -> {
-            responseCatalogList.add(new ModelMapper().map(catalogEntity, ResponseCatalog.class));
+        List<ResponseCatalog> catalogs = new ArrayList<>();
+        allCatalogs.forEach(catalogEntity -> {
+            catalogs.add(new ModelMapper().map(catalogEntity, ResponseCatalog.class));
         });
 
-        return ResponseEntity.status(HttpStatus.OK).body(responseCatalogList);
+        return ResponseEntity.status(HttpStatus.OK).body(catalogs);
     }
 }

@@ -29,7 +29,7 @@ import java.util.List;
  * @since 1.0
  */
 @RestController
-@RequestMapping("/user-service")
+@RequestMapping("")
 @Slf4j
 @RequiredArgsConstructor
 public class UserController {

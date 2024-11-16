@@ -16,6 +16,9 @@ import lombok.Data;
 @Data
 public class RequestUser {
 
+    @NotNull(message = "User id cannot be null")
+    private String userId;
+
     @NotNull(message = "Email cannot be null")
     private String email;
 

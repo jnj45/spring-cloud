@@ -33,7 +33,7 @@ public class UserService {
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     public UserDto createUser(UserDto userDto) {
-        userDto.setUserId(UUID.randomUUID().toString());
+//        userDto.setUserId(UUID.randomUUID().toString());
 
         ModelMapper modelMapper = new ModelMapper();
         modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);

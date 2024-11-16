@@ -3,7 +3,7 @@ server:
 
 spring:
   application:
-    name: catalog-service
+    name: order-service
   datasource:
     url: jdbc:h2:mem:testdb  # ???? ?? ??
 #    url: jdbc:h2:~/test # ????. ~:????????-->?)C:\Users\username\test.mv.db
@@ -13,15 +13,14 @@ spring:
   jpa:
     hibernate:
       ddl-auto: create-drop
-    defer-datasource-initialization: true
     show-sql: true
     properties:
       hibernate:
         format_sql: true
     generate-ddl: true
-  sql:
-    init:
-      mode: embedded
+#  sql:
+#    init:
+#      mode: always
 
 eureka:
   instance:
@@ -34,4 +33,4 @@ eureka:
 
 logging:
   level:
-    com.example.catalogservice: DEBUG
+    com.example.orderservice: DEBUG

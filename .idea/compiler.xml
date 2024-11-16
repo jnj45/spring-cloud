@@ -8,11 +8,12 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="apigateway" />
+        <module name="catalog-service" />
         <module name="first-service" />
         <module name="discoveryservice" />
         <module name="user-service" />
+        <module name="order-service" />
         <module name="second-service" />
-        <module name="catalog-service" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -28,6 +29,7 @@
       <module name="discoveryservice" options="-parameters" />
       <module name="first-service" options="-parameters" />
       <module name="gateway-service" options="-parameters" />
+      <module name="order-service" options="-parameters" />
       <module name="second-service" options="-parameters" />
       <module name="user-service" options="-parameters" />
     </option>
