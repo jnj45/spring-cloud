@@ -2,6 +2,7 @@ package com.example.userservice.dto;
 
 import com.example.userservice.vo.ResponseOrder;
 import lombok.Data;
+import lombok.ToString;
 
 import java.util.Date;
 import java.util.List;

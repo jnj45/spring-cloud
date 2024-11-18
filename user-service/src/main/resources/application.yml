@@ -35,3 +35,7 @@ eureka:
 
 greeting:
   message: Welcome to the Simple E-Commerce
+
+token:
+  expiration: 86400000 # 60 * 60 * 24 * 1000
+  secret: your-very-secure-and-long-key-which-must-be-at-least-64-bytes!-must-be-saved-in-enviroment-properties

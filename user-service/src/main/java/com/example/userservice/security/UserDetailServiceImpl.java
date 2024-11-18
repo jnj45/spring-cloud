@@ -1,13 +1,14 @@
 package com.example.userservice.security;
 
+import com.example.userservice.dto.UserDto;
 import com.example.userservice.entity.UserEntity;
 import com.example.userservice.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -24,7 +25,7 @@ import java.util.ArrayList;
  */
 @Service
 @RequiredArgsConstructor
-public class UserDetailService implements UserDetailsService {
+public class UserDetailServiceImpl implements UserDetailsService {
 
     private final UserRepository userRepository;
 
@@ -34,7 +35,11 @@ public class UserDetailService implements UserDetailsService {
         if (userEntity == null) {
             throw new UsernameNotFoundException(username);
         }
-        return new User(userEntity.getUserId(), userEntity.getEncryptedPwd(),
-                true, true, true, true, new ArrayList<>());
+        UserDto userDto = new ModelMapper().map(userEntity, UserDto.class);
+
+        return new CustomUserDetails(userEntity.getUserId(), userEntity.getEncryptedPwd(),
+                true, true, true, true,
+                new ArrayList<>(),
+                userDto);
     }
 }

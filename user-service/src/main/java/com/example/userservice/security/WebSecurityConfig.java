@@ -1,6 +1,5 @@
 package com.example.userservice.security;
 
-import com.example.userservice.service.UserService;
 import jakarta.servlet.Filter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -11,7 +10,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
@@ -30,11 +28,9 @@ import org.springframework.security.web.SecurityFilterChain;
 @RequiredArgsConstructor
 public class WebSecurityConfig {
 
-//    private final UserService userService;
-//    private final Environment env;
-
-    // ajax 로그인 시, authenticationManager 정보를 추출하기 위한 클래스
+    private final UserDetailServiceImpl userDetailsService;
     private final AuthenticationConfiguration authenticationConfiguration;
+    private final Environment environment;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -54,13 +50,19 @@ public class WebSecurityConfig {
     }
 
     private Filter getAuthenticationFilter() throws Exception {
-//        AuthenticationFilter authenticationFilter = new AuthenticationFilter(
-//                authenticationConfiguration.getAuthenticationManager(), userService, env
-//        );
-        AuthenticationFilter authenticationFilter = new AuthenticationFilter();
+        CustomUsernamePasswordAuthenticationFilter authenticationFilter = new CustomUsernamePasswordAuthenticationFilter(environment);
         authenticationFilter.setAuthenticationManager(authenticationConfiguration.getAuthenticationManager());
+//        authenticationFilter.setAuthenticationManager(authenticationManager());
         return authenticationFilter;
     }
+
+//    @Bean
+//    public AuthenticationManager authenticationManager() throws Exception {
+//        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+//        authProvider.setUserDetailsService(userDetailsService);
+//        authProvider.setPasswordEncoder(passwordEncoder());
+//        return new ProviderManager(authProvider);
+//    }
 
     @Bean
     BCryptPasswordEncoder bCryptPasswordEncoder() {
