@@ -69,7 +69,8 @@ public class AuthorizationHeaderFilter extends AbstractGatewayFilterFactory<Auth
     private boolean isJwtValid(String jwt) {
         boolean isValid = false;
 
-        byte[] secretKeyBytes = Base64.getEncoder().encode(env.getProperty("token.secret").getBytes());
+        String secret = env.getProperty("token.secret");
+        byte[] secretKeyBytes = Base64.getEncoder().encode(secret.getBytes());
         SecretKeySpec signingKey = new SecretKeySpec(secretKeyBytes, SignatureAlgorithm.HS512.getJcaName());
 
         String subject = null;

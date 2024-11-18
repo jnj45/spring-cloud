@@ -4,12 +4,14 @@ server:
 spring:
   application:
     name: user-service
-  datasource:
-    url: jdbc:h2:mem:testdb  # 인메모리 모드 사용
-#    url: jdbc:h2:~/test # 파일기반. ~:사용자홈디렉토리-->예)C:\Users\username\test.mv.db
-    driver-class-name: org.h2.Driver
-    username: sa
-    password:
+#  profiles:
+#    active: dev
+#  datasource:
+#    url: jdbc:h2:mem:testdb  # 인메모리 모드 사용
+##    url: jdbc:h2:~/test # 파일기반. ~:사용자홈디렉토리-->예)C:\Users\username\test.mv.db
+#    driver-class-name: org.h2.Driver
+#    username: sa
+#    password:
   h2:
     console:
       enabled: true
@@ -23,6 +25,16 @@ spring:
     properties:
       hibernate:
         format_sql: true
+  cloud:
+    config:
+      name: user-service
+  config:
+    import: optional:configserver:http://127.0.0.1:8888
+  rabbitmq:
+    host: 127.0.0.1
+    port: 5672
+    username: guest
+    password: guest
 
 eureka:
   instance:
@@ -36,6 +48,11 @@ eureka:
 greeting:
   message: Welcome to the Simple E-Commerce
 
-token:
-  expiration: 86400000 # 60 * 60 * 24 * 1000
-  secret: your-very-secure-and-long-key-which-must-be-at-least-64-bytes!-must-be-saved-in-enviroment-properties
+#token:
+#  expiration: 86400000 # 60 * 60 * 24 * 1000
+#  secret: your-very-secure-and-long-key-which-must-be-at-least-64-bytes!-must-be-saved-in-enviroment-properties
+management:
+  endpoints:
+    web:
+      exposure:
+        include: refresh, health, beans, busrefresh

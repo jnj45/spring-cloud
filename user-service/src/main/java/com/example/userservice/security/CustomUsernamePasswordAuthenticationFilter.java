@@ -68,7 +68,8 @@ public class CustomUsernamePasswordAuthenticationFilter extends UsernamePassword
         CustomUserDetails userDetails = (CustomUserDetails) authResult.getPrincipal();
         log.debug("userId: {}", userDetails.getUsername());
 
-        byte[] secretKeyBytes = Base64.getEncoder().encode(env.getProperty("token.secret").getBytes());
+        String secret = env.getProperty("token.secret");
+        byte[] secretKeyBytes = Base64.getEncoder().encode(secret.getBytes());
         SecretKey secretKey = Keys.hmacShaKeyFor(secretKeyBytes);
 
         Instant now = Instant.now();

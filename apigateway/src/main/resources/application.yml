@@ -1,6 +1,11 @@
+server:
+  port: 8000
+
 spring:
   application:
     name: apigateway
+#  profiles:
+#    active: prod
   cloud:
     gateway:
       default-filters:
@@ -48,6 +53,22 @@ spring:
         - id: user-service
           uri: lb://USER-SERVICE
           predicates:
+            - Path=/user-service/health_check
+            - Method=GET
+          filters:
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/user-service/(?<segment>.*), /$\{segment}
+        - id: user-service
+          uri: lb://USER-SERVICE
+          predicates:
+            - Path=/user-service/actuator/**
+            - Method=GET,POST
+          filters:
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/user-service/(?<segment>.*), /$\{segment}
+        - id: user-service
+          uri: lb://USER-SERVICE
+          predicates:
             - Path=/user-service/users
             - Method=POST
           filters:
@@ -70,8 +91,15 @@ spring:
           uri: lb://ORDER-SERVICE
           predicates:
             - Path=/order-service/**
-server:
-  port: 8000
+    config:
+      name: apigateway
+  config:
+    import: optional:configserver:http://127.0.0.1:8888
+  rabbitmq:
+    host: 127.0.0.1
+    port: 5672
+    username: guest
+    password: guest
 
 eureka:
   client:
@@ -80,5 +108,11 @@ eureka:
     service-url:
       defaultZone: http://127.0.0.1:8761/eureka
 
-token:
-  secret: your-very-secure-and-long-key-which-must-be-at-least-64-bytes!-must-be-saved-in-enviroment-properties
+#token:
+#  secret: your-very-secure-and-long-key-which-must-be-at-least-64-bytes!-must-be-saved-in-enviroment-properties
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: refresh, health, beans, httpexchanges, busrefresh

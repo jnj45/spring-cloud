@@ -8,6 +8,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="apigateway" />
+        <module name="config-service" />
         <module name="catalog-service" />
         <module name="first-service" />
         <module name="discoveryservice" />
@@ -26,6 +27,7 @@
       <module name="apigateway" options="-parameters" />
       <module name="apigateweb" options="-parameters" />
       <module name="catalog-service" options="-parameters" />
+      <module name="config-service" options="-parameters" />
       <module name="discoveryservice" options="-parameters" />
       <module name="first-service" options="-parameters" />
       <module name="gateway-service" options="-parameters" />

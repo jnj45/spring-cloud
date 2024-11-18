@@ -1,0 +1,36 @@
+server:
+  port: 8888
+
+spring:
+  application:
+    name: config-service
+  profiles:
+    active: native
+  cloud:
+    config:
+      server:
+        native:
+          search-locations: file:///Dev/edu/spring-cloud-config-native
+#        git:
+#          uri: file:///Dev/edu/spring-cloud-config-repo
+#          uri: https://github.com/jnj45/spring-cloud-config-repo.git
+#          username: jnj45
+#          password:
+  rabbitmq:
+    host: 127.0.0.1
+    port: 5672
+    username: guest
+    password: guest
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: refresh, health, beans, busrefresh
+
+encrypt:
+#  key: abcdefghijklmnopqrstuvwxyz #??? ???
+  key-store:
+    location: file:///Dev/edu/keystore/apiEncryptKey.jks
+    password: ecbank1!
+    alias: apiEncryptKey
