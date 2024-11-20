@@ -7,11 +7,11 @@ spring:
 #  profiles:
 #    active: dev
 #  datasource:
-#    url: jdbc:h2:mem:testdb  # 인메모리 모드 사용
+    url: jdbc:h2:h2mem:testdb  # 인메모리 모드 사용
 ##    url: jdbc:h2:~/test # 파일기반. ~:사용자홈디렉토리-->예)C:\Users\username\test.mv.db
-#    driver-class-name: org.h2.Driver
-#    username: sa
-#    password:
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
   h2:
     console:
       enabled: true
@@ -56,3 +56,28 @@ management:
     web:
       exposure:
         include: refresh, health, beans, busrefresh
+  tracing:
+    sampling:
+      probability: 1.0
+    propagation:
+      consume: B3
+      produce: B3
+  zipkin:
+    tracing:
+      endpoint: http://localhost:9411/api/v2/spans
+
+logging:
+  level:
+    com.example.userservice.client: DEBUG
+  pattern:
+    correlation: '%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]'
+
+#resilience4j:
+#  circuitbreaker:
+#    configs:
+#      default:
+#        slidingWindowType: COUNT_BASED
+#        slidingWindowSize: 2
+#        failureRateThreshold: 4
+#        wait-duration-in-open-state:
+#          seconds: 1

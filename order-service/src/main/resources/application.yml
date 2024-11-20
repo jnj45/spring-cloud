@@ -10,6 +10,10 @@ spring:
     driver-class-name: org.h2.Driver
     username: sa
     password:
+#    url: jdbc:mysql://localhost:3306/testdb
+#    driver-class-name: org.mariadb.jdbc.Driver
+#    username: root
+#    password: ecbank1!
   jpa:
     hibernate:
       ddl-auto: create-drop
@@ -34,3 +38,16 @@ eureka:
 logging:
   level:
     com.example.orderservice: DEBUG
+  pattern:
+    correlation: '%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]'
+
+management:
+  tracing:
+    sampling:
+      probability: 1.0
+    propagation:
+      consume: B3
+      produce: B3
+  zipkin:
+    tracing:
+      endpoint: http://localhost:9411/api/v2/spans

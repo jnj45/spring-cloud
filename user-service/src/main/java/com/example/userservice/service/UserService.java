@@ -6,8 +6,11 @@ import com.example.userservice.entity.UserEntity;
 import com.example.userservice.repository.UserRepository;
 import com.example.userservice.vo.ResponseOrder;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
+import org.springframework.cloud.client.circuitbreaker.CircuitBreaker;
+import org.springframework.cloud.client.circuitbreaker.CircuitBreakerFactory;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpMethod;
@@ -33,6 +36,7 @@ import java.util.UUID;
  */
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class UserService {
 
     private final UserRepository userRepository;
@@ -40,6 +44,7 @@ public class UserService {
     private final RestTemplate restTemplate;
     private final Environment env;
     private final OrderServiceClient orderServiceClient;
+    private final CircuitBreakerFactory circuitBreakerFactory;
 
     public UserDto createUser(UserDto userDto) {
 //        userDto.setUserId(UUID.randomUUID().toString());
@@ -72,9 +77,21 @@ public class UserService {
 //        List<ResponseOrder> orders = orderListResponse.getBody();
 
         //FeignClient 사용
-        List<ResponseOrder> orders = orderServiceClient.getOrder(userId);
-        userDto.setOrders(orders);
+        /* Feign Exception handling */
+//        List<ResponseOrder> orders = null;
+//        try {
+//            orders = orderServiceClient.getOrder(userId);
+//        } catch (Exception e) {
+//            log.error(e.getMessage());
+//        }
+        /* ErrorDecoder 사용 */
+//        List<ResponseOrder> orders = orderServiceClient.getOrders(userId);
 
+        /* circuitBreaker */
+        CircuitBreaker circuitBreaker = circuitBreakerFactory.create("getOrders");
+        List<ResponseOrder> orders = circuitBreaker.run(() -> orderServiceClient.getOrders(userId), throwable -> new ArrayList<>());
+
+        userDto.setOrders(orders);
         return userDto;
     }
 
